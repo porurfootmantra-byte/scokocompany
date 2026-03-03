@@ -305,9 +305,12 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
+  .grid-2 { 
+    display: flex; 
+    flex-direction: column-reverse; /* This flips the order: Text on top, Image below */
+    gap: 40px; 
   }
+  /* ... */
 }
 .card h3 { color: var(--scoko-green); margin-bottom: 16px; }
 .card p { font-size: 14px; color: rgba(16, 12, 13, 0.7); }
@@ -408,4 +411,5 @@ h1, h2, h3, h4 {
   .footer-top { grid-template-columns: 1fr; gap: 60px; }
   .footer-bottom { flex-direction: column; gap: 24px; text-align: center; }
 }
+
 
