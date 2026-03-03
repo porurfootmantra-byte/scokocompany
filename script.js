@@ -1,72 +1,78 @@
 // Initialize Lucide Icons
 lucide.createIcons();
 
-// Initialize AOS (Animate On Scroll)
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100,
-    easing: 'ease-in-out'
-});
-
 // Mobile Menu Toggle
 const menuToggle = document.getElementById('menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
-const menuIcon = menuToggle.querySelector('i');
-
 let isMenuOpen = false;
 
 menuToggle.addEventListener('click', () => {
-    isMenuOpen = !isMenuOpen;
-    
-    if (isMenuOpen) {
-        mobileMenu.style.display = 'flex';
-        menuToggle.innerHTML = '<i data-lucide="x"></i>';
-    } else {
-        mobileMenu.style.display = 'none';
-        menuToggle.innerHTML = '<i data-lucide="menu"></i>';
-    }
-    
-    // Re-initialize icons for the new button state
-    lucide.createIcons();
+  isMenuOpen = !isMenuOpen;
+  if (isMenuOpen) {
+    mobileMenu.style.display = 'flex';
+    menuToggle.innerHTML = '<i data-lucide="x"></i>';
+  } else {
+    mobileMenu.style.display = 'none';
+    menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+  }
+  lucide.createIcons();
 });
 
-// Close mobile menu when a link is clicked
+// Close mobile menu on link click
 const mobileLinks = mobileMenu.querySelectorAll('a');
 mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.style.display = 'none';
-        menuToggle.innerHTML = '<i data-lucide="menu"></i>';
-        lucide.createIcons();
-        isMenuOpen = false;
-    });
+  link.addEventListener('click', () => {
+    mobileMenu.style.display = 'none';
+    menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+    lucide.createIcons();
+    isMenuOpen = false;
+  });
 });
 
 // Navbar scroll effect
 window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(227, 220, 210, 0.95)';
-        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
-    } else {
-        navbar.style.background = 'rgba(227, 220, 210, 0.8)';
-        navbar.style.boxShadow = 'none';
-    }
+  const navbar = document.querySelector('.navbar');
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
 });
 
-// Smooth scroll for all anchor links
+// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    });
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    if (targetId === '#') return;
+    
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 80,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+// Simple Scroll Reveal (Intersection Observer)
+const observerOptions = {
+  threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.section, .card, .hero-content').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'all 0.8s ease-out';
+  observer.observe(el);
 });
